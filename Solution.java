@@ -1,50 +1,45 @@
-package Learnen;
+package Learnen.SameTree;
 
+import java.util.LinkedList;
+import java.util.Queue;
 
-
-
-class Solution {
-    public static void main(String[] args) {
-
-
-
-        double[] H = new double[]{0.21, 0.20, 0.19, 0.18, 0.17, 0.16, 0.15, 0.14, 0.13, 0.12};
-        double[] L = new double[]{0.025, 0.026, 0.024, 0.022, 0.021, 0.021, 0.022, 0.028, 0.022, 0.023};
-        double[] f = new double[10];
-        double[] fdel = new double[10];
-        double[] fdel2 = new double[10];
-
-        double s = 0;
-        for(int i = 0; i < 10; i++) {
-            f[i] = f(H[i], L[i]);
-            System.out.println("N = " + (i + 1) + "    H = " + H[i] + "   L = " + L[i] + "    f = " + f[i]);
-            s += f[i];
+public class Solution {
+    Queue<TreeNode> queue1 = new LinkedList<>();
+    Queue<TreeNode> queue2 = new LinkedList<>();
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if(p == null && q == null) {
+            return true;
+        }else if(p == null || q == null){
+            return false;
         }
+        queue1.add(p);
+        queue2.add(q);
 
-        s = s / 10;
-        System.out.println("Fsr = " + s);
+        while(!(queue1.isEmpty() && queue2.isEmpty())){
+            TreeNode current1 = queue1.poll();
+            TreeNode current2 = queue2.poll();
 
-        for(int i = 0; i < 10; i++){
-            fdel[i] = Math.abs(s - f[i]);
-            fdel2[i] = Math.pow(fdel[i], 2);
-            System.out.println("N = " + (i + 1) + "    Fdelta = " + fdel[i] + "    Fdelta2 = " + fdel2[i]);
+
+            if(current1.val != current2.val) return false;
+
+            if(current1.left == null && current2.left != null ||
+                    current1.left != null && current2.left == null) return false;
+
+
+            if(current1.right == null && current2.right != null ||
+                    current1.right != null && current2.right == null) return false;
+
+
+
+            if(current1.left != null) queue1.add(current1.left);
+            if(current2.left != null) queue2.add(current2.left);
+
+            if(current1.right != null) queue1.add(current1.right);
+            if(current2.right != null) queue2.add(current2.right);
         }
-
-        double sumdelt = 0;
-
-        for(int i = 0; i < 10; i++){
-            sumdelt+=fdel2[i];
-        }
-
-        s = Math.pow(sumdelt / 90, 0.5);
-
-        System.out.println("S = " + s);
-
-
+        return true;
     }
 
-    public static double f(double H, double L){
-        double m1 = 0.41, m2 = 0.1, g = 9.8;
-        return ((Math.pow(m1, 2) * H) / ((m1 + m2) * L) + (m1 + m2)) * g;
-    }
+
 }
+
