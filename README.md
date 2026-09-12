@@ -1,1 +1,3 @@
 # StudyRepository
+
+Алгоритмы
